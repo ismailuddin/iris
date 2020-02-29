@@ -2,6 +2,7 @@
 .DS_Store
 data
 notebooks
+public/js/modules/*.js
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
