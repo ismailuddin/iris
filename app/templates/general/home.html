@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block head_scripts %}
+{% endblock %}
+
+{% block navbar %}
+{% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="p-10 h-full overflow-y-hidden flex-grow-1">
+    <div class="h-full" id="app"></div>
+</div>
+<script src="/public/js/modules/main.js"></script>
+{% endblock %}

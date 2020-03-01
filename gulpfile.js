@@ -2,12 +2,16 @@ const gulp = require('gulp');
 const postcss = require('gulp-postcss')
 const sass = require('gulp-sass');
 
+
 gulp.task('sass', function() {
     return gulp.src('src/sass/main.scss')
-        .pipe(sass().on('error', sass.logError))
+        .pipe(sass({
+            outputStyle: "compressed"
+        }).on('error', sass.logError))
         .pipe(postcss([
             require('tailwindcss'),
-            require('autoprefixer')
+            require('autoprefixer'),
+            require('cssnano')
         ]))
         .pipe(gulp.dest('public/css/'))
 });

@@ -3,6 +3,7 @@
 data
 notebooks
 public/js/modules/*.js
+public/css/*.css
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
