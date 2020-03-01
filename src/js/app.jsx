@@ -8,11 +8,13 @@ const ItemTypes = {
     IMAGE: 'image'
 }
 
-function Image({ url }) {
+function Image({ image }) {
     const [{ isDragging }, drag] = useDrag({
         item: {
             type: ItemTypes.IMAGE,
-            url: url
+            url: image.url,
+            id: image.id,
+            category: image.category
         },
         end: (item, monitor) => {
             console.log(monitor.getDropResult());
@@ -26,7 +28,7 @@ function Image({ url }) {
             ref={drag}
             className="inline-block transition duration-300 px-4 py-2 bg-gray-200 border border-gray-300 hover:bg-gray-100"
         >
-            {url}
+            {image.url}
         </div>
     )
 }
@@ -42,7 +44,7 @@ function Column({ images }) {
             <div className="grid grid-flow-row grid-cols-2 gap-4">
                 {images.map((image, i) => (
                     <Image
-                        url={image}
+                        image={image}
                         key={i}
                     />
                 ))}
@@ -51,15 +53,17 @@ function Column({ images }) {
     )
 }
 
-function DroppableColumn() {
+function DroppableColumn({ setImageCategory }) {
     const [droppedImages, setDroppedImages] = useState([]);
     const [{ isOver, canDrop }, drop] = useDrop({
         accept: ItemTypes.IMAGE,
         drop: (item, monitor) => {
+            let image = monitor.getItem();
             setDroppedImages([
                 ...droppedImages,
-                monitor.getItem().url
-            ])
+                image
+            ]);
+            setImageCategory(image.id, "new_categ");
             return {
                 target: "Got image"
             }
@@ -75,7 +79,7 @@ function DroppableColumn() {
             Dropped
             <div className="grid grid-flow-row grid-cols-1 gap-1">
                 {droppedImages.map((image, i) => (
-                    <Image url={image} key={i} />
+                    <Image image={image} key={i} />
                 ))}
             </div>
         </div>
@@ -83,20 +87,31 @@ function DroppableColumn() {
 }
 
 Column.propTypes = {
-    images: PropTypes.arrayOf(PropTypes.string),
+    images: PropTypes.arrayOf(PropTypes.object),
 }
 
 
 export default class App extends Component {
     state = {
         images: []
+
+    }
+
+    setImageCategory = (id, category) => {
+        let image = this.state.images.filter(img => img.id == id)[0];
+        const filteredImages = this.state.images.filter(img => img.id !== id);
+        image["category"] = category;
+        this.setState({
+            images: [...filteredImages, image]
+        });
+        console.log("fired")
     }
 
     componentDidMount() {
         axios.get("/api/images").then(
             response => {
                 this.setState({
-                    images: response.data['images']
+                    images: response.data['images'].slice(0, 5)
                 });
             }
         )
@@ -116,11 +131,16 @@ export default class App extends Component {
                     <div className="flex-grow-1 flex overflow-y-scroll">
                         <div className="w-4/6 p-2 h-full ">
                             <Column
-                                images={this.state.images.slice(0, 5)}
+                                images={this.state.images.filter(
+                                        image => image.category === "category_1"
+                                    )
+                                }
                             />
                         </div>
                         <div className="w-2/6 p-2">
-                            <DroppableColumn />
+                            <DroppableColumn
+                                setImageCategory={this.setImageCategory}
+                            />
                         </div>
                     </div>
                 </DndProvider>

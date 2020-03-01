@@ -11,5 +11,11 @@ def test():
 def get_images():
     images = glob.glob("./data/*.png")
     return jsonify({
-        "images": images
+        "images": [
+            {
+                "id": i,
+                "url": url,
+                "category": "category_1"
+            } for i, url in enumerate(images)
+        ]
     })
