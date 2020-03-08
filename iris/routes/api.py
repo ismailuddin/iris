@@ -21,7 +21,8 @@ def get_files():
         "categories": categories,
         "selected_category": category,
         "n_pages": paginator.pages,
-        "files": [file.json for file in files]
+        "files": [file.json for file in files],
+        "total": paginator.total
     })
 
 

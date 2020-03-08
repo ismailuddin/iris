@@ -1,6 +1,7 @@
 import glob
 import pathlib
 from typing import List
+from tqdm import tqdm
 from ..models.files import File
 from .. import db
 
@@ -19,7 +20,7 @@ def build_filelist(glob_pattern: str) -> List[dict]:
 
 
 def populate_db_with_filelist(filelist: List[dict]):
-    for file in filelist:
+    for file in tqdm(filelist):
         db.session.add(
             File(**file)
         )

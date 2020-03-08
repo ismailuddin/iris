@@ -1,0 +1,3 @@
+include public/css/main.css
+inclue public/js/modules/main.js
+recursive-include iris *.html

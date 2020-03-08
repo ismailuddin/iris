@@ -1,4 +1,5 @@
 *.db
+images/
 .vscode
 .DS_Store
 data

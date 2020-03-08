@@ -27,8 +27,9 @@ function File({ file }) {
     return (
         <div
             ref={drag}
-            className="flex-none m-2 w-40 transition duration-300 px-4 py-2 bg-gray-200 border border-gray-300 hover:bg-gray-100"
+            className="flex-none m-2 w-40 transition duration-300 px-4 py-2 rounded bg-white border border-gray-300 hover:bg-gray-100 shadow-sm text-sm text-gray-700 truncate"
         >
+            <img className="mb-1" src={`/data/${file.path}`} alt=""/>
             {file.filename}
         </div>
     );
@@ -83,7 +84,7 @@ function DroppableColumn({ category, setFileCategory, colour, disabled }) {
     });
     if (!disabled) {
         return (
-            <div ref={drop} className={`block w-full text-center py-4 mb-2 bg-${colour}-300 border-4 border-${colour}-200 rounded-lg`}>
+            <div ref={drop} className={`block w-full text-center py-4 mb-2 bg-${colour}-100 border border-${colour}-200 rounded-lg`}>
                 <span className={`font-bold text-${colour}-900`}>
                     {category}
                 </span>
@@ -109,7 +110,7 @@ function CategorySelector({ categories, selectedCategory, setCategory }) {
         setCategory(e.target.value);
     };
     return (
-        <div>
+        <div className="mr-4 border-r border-gray-300 pr-4 pt-1">
             <label
                 className="inline-block uppercase tracking-wide text-gray-700 text-xs font-bold mr-4"
             >
@@ -146,6 +147,49 @@ CategorySelector.propTypes = {
     setCategory: PropTypes.func
 };
 
+
+function ItemsPerPageSelector({ nPerPage, setNPerPage }) {
+    const handleChange = e => {
+        setNPerPage(e.target.value);
+    };
+    const options = [10, 25, 50, 100, 200];
+    return (
+        <div className="mr-4 border-r border-gray-300 pr-4 pt-1">
+            <label
+                className="inline-block uppercase tracking-wide text-gray-700 text-xs font-bold mr-4"
+            >
+                # per page
+            </label>
+            <div className="relative inline-block">
+                <select
+                    className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-2 pr-8 mr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    id="grid-state"
+                    value={nPerPage}
+                    onChange={handleChange}
+                >
+                    {options.map((option, i) => (
+                        <option key={i} value={option}>{option}</option>
+                    ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg
+                        class="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                    >
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+ItemsPerPageSelector.propTypes = {
+    nPerPage: PropTypes.number,
+    setNPerPage: PropTypes.func,
+};
+
 function Paginator({ nPages, currentPage, setPage }) {
     const nextPage = () => {
         if (currentPage >= 1 && currentPage < nPages) {
@@ -158,18 +202,18 @@ function Paginator({ nPages, currentPage, setPage }) {
         }
     }
     return (
-        <div className="inline-flex">
+        <div className="inline-flex mr-4 right-0 absolute">
             <button
-                className={"bg-gray-300 hover:bg-gray-400 font-bold py-1 px-4 rounded-l " + (currentPage == 1 ? " text-gray-500" : " text-gray-800")}
+                className={"text-xs bg-gray-300 hover:bg-gray-400 font-bold py-1 px-4 rounded-l " + (currentPage == 1 ? " text-gray-500" : " text-gray-800")}
                 onClick={prevPage}
             >
                 Prev
             </button>
-            <div className="bg-gray-300 text-gray-600 font-bold py-1 px-4">
+            <div className="text-xs bg-gray-300 text-gray-600 font-bold py-2 px-4">
                 {currentPage}
             </div>
             <button
-                className={"bg-gray-300 hover:bg-gray-400 font-bold py-1 px-4 rounded-r " + (currentPage < nPages ? " text-gray-800" : " text-gray-500")}
+                className={"text-xs bg-gray-300 hover:bg-gray-400 font-bold py-1 px-4 rounded-r " + (currentPage < nPages ? " text-gray-800" : " text-gray-500")}
                 onClick={nextPage}
             >
                 Next
@@ -198,7 +242,9 @@ export default class App extends Component {
         category: null,
         categories: [],
         nPages: 1,
-        currentPage: 1
+        nPerPage: 50,
+        currentPage: 1,
+        totalItems: 0
     };
 
     setFileCategory = (id, category) => {
@@ -219,7 +265,8 @@ export default class App extends Component {
     setPage = (pageNumber) => {
         this.setState({
             currentPage: pageNumber
-        }, () => this.getFiles());
+        },
+        () => this.getFiles());
     }
 
     setCategory = category => {
@@ -232,11 +279,19 @@ export default class App extends Component {
         );
     }
 
+    setNPerPage = number => {
+        this.setState({
+            nPerPage: number,
+            currentPage: 1
+        },
+        () => this.getFiles());
+    }
+
     getFiles = () => {
         axios
             .post("/api/get_files", {
-                page: this.state.currentPage,
-                per_page: 50,
+                page: Number(this.state.currentPage),
+                per_page: Number(this.state.nPerPage),
                 category: this.state.category
             })
             .then(response => {
@@ -244,12 +299,11 @@ export default class App extends Component {
                     files: response.data["files"],
                     categories: response.data["categories"],
                     category: response.data["selected_category"],
-                    nPages: response.data["n_pages"]
+                    nPages: response.data["n_pages"],
+                    totalItems: response.data["total"]
                 });
             });
     }
-
-
 
     componentDidMount() {
         this.getFiles();
@@ -259,11 +313,19 @@ export default class App extends Component {
         const getColour = colourIterator(colours);
         return (
             <div className="h-full flex flex-col">
-                <div id="header" className="border-b border-gray-300 pb-2 flex justify-between">
+                <div id="header" className="py-3 px-4 border-b border-gray-300 flex bg-white shadow-sm">
                     <CategorySelector
                         categories={this.state.categories}
                         selectedCategory={this.state.category}
                         setCategory={this.setCategory}
+                    />
+                    <div className="py-2 mr-4 border-r border-gray-300 pr-4 text-xs">
+                        {(this.state.currentPage - 1) * this.state.nPerPage} - {(this.state.currentPage * this.state.nPerPage) <= this.state.totalItems ? this.state.currentPage * this.state.nPerPage : this.state.totalItems} / {this.state.totalItems}
+                        <span className="ml-2 uppercase tracking-wide text-gray-700 font-bold">items</span>
+                    </div>
+                    <ItemsPerPageSelector 
+                        nPerPage={this.state.nPerPage}
+                        setNPerPage={this.setNPerPage}
                     />
                     <Paginator
                         currentPage={this.state.currentPage}
