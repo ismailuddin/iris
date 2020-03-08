@@ -1,3 +1,4 @@
+*.db
 .vscode
 .DS_Store
 data
