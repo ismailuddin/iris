@@ -340,6 +340,7 @@ export default class App extends Component {
                             />
                         </div>
                         <div className="w-1/6 p-2">
+                            <h5 className="text-gray-600 text-kg font-bold mb-2">Drag images here</h5>
                             {this.state.categories
                                 .map((category, i) => (
                                     <DroppableColumn
