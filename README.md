@@ -1,6 +1,8 @@
 # Iris
 > A web platform for labelling image files, with built in tracking to make management of labelled data hassle free.
 
+![Iris](preview.png)
+
 ## Why use Iris?
 * Label thousands of images (or possibly millions?) easily without having to use a file manager that slows down. Iris uses pagination to view subsets of your data, so the platform doesn't slow down with large quantities of images.
 * Keep track of all your labels using a database. Iris stores the labels for your data in an SQLite database file in a `.iris` directory that is created in the root of your data folder. This means your folder path doesn't dictate the label.

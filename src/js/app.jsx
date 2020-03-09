@@ -40,13 +40,10 @@ File.propTypes = {
 };
 
 function Column({ files }) {
-    const [droppedFiles, setDroppedFiles] = useState([]);
     const [{ isOver, canDrop }, drop] = useDrop({
         accept: ItemTypes.FILE,
         drop: (item, monitor) => {
             let file = monitor.getItem();
-            setDroppedFiles([...droppedFiles, file]);
-            setImageCategory(file.id, "new_categ");
             return {
                 target: "Got file"
             };
