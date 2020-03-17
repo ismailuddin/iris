@@ -149,7 +149,7 @@ function ItemsPerPageSelector({ nPerPage, setNPerPage }) {
     const handleChange = e => {
         setNPerPage(e.target.value);
     };
-    const options = [10, 25, 50, 100, 200];
+    const options = [1, 10, 25, 50, 100, 200];
     return (
         <div className="mr-4 border-r border-gray-300 pr-4 pt-1">
             <label
@@ -198,6 +198,12 @@ function Paginator({ nPages, currentPage, setPage }) {
             setPage(currentPage - 1);
         }
     }
+    const handleChange = e => {
+        let pageNumber = Number(e.target.value);
+        if (pageNumber >= 1 && pageNumber <= nPages) {
+            setPage(pageNumber);
+        }
+    }
     return (
         <div className="inline-flex mr-4 right-0 absolute">
             <button
@@ -206,9 +212,15 @@ function Paginator({ nPages, currentPage, setPage }) {
             >
                 Prev
             </button>
-            <div className="text-xs bg-gray-300 text-gray-600 font-bold py-2 px-4">
-                {currentPage}
-            </div>
+            <input
+                type="text"
+                className="inline-block text-xs bg-gray-300 text-gray-600 font-bold py-2 px-4"
+                style={{
+                    width: '4rem'
+                }}
+                value={currentPage}
+                onChange={handleChange}
+            />
             <button
                 className={"text-xs bg-gray-300 hover:bg-gray-400 font-bold py-1 px-4 rounded-r " + (currentPage < nPages ? " text-gray-800" : " text-gray-500")}
                 onClick={nextPage}
@@ -340,7 +352,7 @@ export default class App extends Component {
                             />
                         </div>
                         <div className="w-1/6 p-2">
-                            <h5 className="text-gray-600 text-kg font-bold mb-2">Drag images here</h5>
+                            <h5 className="text-gray-600 text-kg font-bold mb-2">Drag images here to relabel</h5>
                             {this.state.categories
                                 .map((category, i) => (
                                     <DroppableColumn
