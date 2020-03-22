@@ -1,5 +1,6 @@
 from flask import request, Blueprint, jsonify
-from ..models.files import File, get_uniq_categories
+from ..models.files import File
+from ..utils.files import get_uniq_categories
 from .. import db
 
 api = Blueprint("api", __name__)

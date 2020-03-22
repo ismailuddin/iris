@@ -27,10 +27,34 @@ function File({ file }) {
     return (
         <div
             ref={drag}
-            className="flex-none m-2 w-40 transition duration-300 px-4 py-2 rounded bg-white border border-gray-300 hover:bg-gray-100 shadow-sm text-sm text-gray-700 truncate"
+            className="flex-none m-2 w-40 transition duration-300 px-4 py-2 rounded bg-white border border-gray-300 hover:bg-gray-100 shadow-sm text-sm text-gray-700"
         >
             <img className="mb-1" src={`/data/${file.path}`} alt=""/>
-            {file.filename}
+            <div className="block">
+                {file.tags.length > 0 ? (
+                    <div className="group relative inline-block hover:bg-gray-300 rounded-full bg-gray-400 text-gray-800 text-xxs font-bold px-2 py-1">
+                        TAGS
+                        <div
+                            className="absolute invisible flex flex-wrap group-hover:visible p-2 bg-white shadow-md rounded-md"
+                            style={{
+                                top: "-35px",
+                                left: 0,
+                                minWidth: '100px',
+                                maxWidth: '400px'
+                            }}
+                        >
+                            {file.tags.map(tag => (
+                                <span className="w-auto flex-none truncate rounded-full bg-indigo-500 uppercase px-1 py-1 text-white text-xxs font-bold m-1">
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                ) : (null)}
+            </div>
+            <div className="truncate">
+                {file.filename}
+            </div>
         </div>
     );
 }
@@ -214,13 +238,16 @@ function Paginator({ nPages, currentPage, setPage }) {
             </button>
             <input
                 type="text"
-                className="inline-block text-xs bg-gray-300 text-gray-600 font-bold py-2 px-4"
+                className="inline-block text-xs bg-gray-300 text-gray-600 font-bold py-2 px-2"
                 style={{
-                    width: '4rem'
+                    width: '3rem'
                 }}
                 value={currentPage}
                 onChange={handleChange}
             />
+            <div className="inline-block text-xs bg-gray-300 text-gray-600 font-bold py-2 px-1">
+                / {nPages}
+            </div>
             <button
                 className={"text-xs bg-gray-300 hover:bg-gray-400 font-bold py-1 px-4 rounded-r " + (currentPage < nPages ? " text-gray-800" : " text-gray-500")}
                 onClick={nextPage}
