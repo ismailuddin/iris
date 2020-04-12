@@ -7,15 +7,19 @@ function CategorySelector({ categories, selectedCategory, setCategory }) {
         setCategory(e.target.value);
     };
     return (
-        <div className="mr-4 border-r border-gray-300 pr-4 pt-1">
+        <div className="mr-4 border-r border-gray-300 pr-4 pt-1 flex items-center">
             <label
-                className="inline-block uppercase tracking-wide text-gray-700 text-xs font-bold mr-4"
+                className="inline-flex uppercase tracking-wide text-blue-700-accent text-xs font-extrabold mr-4"
             >
+                <svg className="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                </svg>
+
                 Category
             </label>
-            <div className="relative inline-block">
+            <div className="relative">
                 <select
-                    className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-2 pr-8 mr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="block appearance-none w-full bg-blue-50 border border-blue-50 text-blue-700 py-1 px-2 pr-8 mr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
                     id="grid-state"
                     value={selectedCategory}
                     onChange={handleChange}
@@ -50,15 +54,15 @@ function ItemsPerPageSelector({ nPerPage, setNPerPage }) {
     };
     const options = [1, 10, 25, 50, 100, 200];
     return (
-        <div className="mr-4 border-r border-gray-300 pr-4 pt-1">
+        <div className="mr-4 border-r border-gray-300 pr-4 pt-1 flex items-center">
             <label
-                className="inline-block uppercase tracking-wide text-gray-700 text-xs font-bold mr-4"
+                className="uppercase tracking-wide text-blue-700-accent text-xs font-extrabold mr-4"
             >
                 # per page
             </label>
-            <div className="relative inline-block">
+            <div className="relative">
                 <select
-                    className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-1 px-2 pr-8 mr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                    className="block appearance-none w-full bg-blue-50 border border-blue-50 text-blue-700 py-1 px-2 pr-8 mr-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-blue-500"
                     id="grid-state"
                     value={nPerPage}
                     onChange={handleChange}
@@ -106,28 +110,32 @@ function Paginator({ nPages, currentPage, setPage }) {
     return (
         <div className="inline-flex mr-4 right-0 absolute">
             <button
-                className={"text-xs bg-gray-300 hover:bg-gray-400 font-bold py-1 px-4 rounded-l " + (currentPage == 1 ? " text-gray-500" : " text-gray-800")}
+                className={"text-xs bg-blue-50 hover:bg-blue-700-accent hover:text-white font-bold py-2 px-4 rounded-l " + (currentPage == 1 ? " text-gray-500" : " text-gray-800")}
                 onClick={prevPage}
             >
-                Prev
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" />
+                </svg>
             </button>
             <input
                 type="text"
-                className="inline-block text-xs bg-gray-300 text-gray-600 font-bold py-2 px-2"
+                className="inline-block text-xs bg-blue-50 text-blue-600 font-bold py-2 px-2"
                 style={{
                     width: '3rem'
                 }}
                 value={currentPage}
                 onChange={handleChange}
             />
-            <div className="inline-block text-xs bg-gray-300 text-gray-600 font-bold py-2 px-1">
+            <div className="inline-block text-xs bg-blue-50 text-blue-600 font-bold py-2 px-1">
                 / {nPages}
             </div>
             <button
-                className={"text-xs bg-gray-300 hover:bg-gray-400 font-bold py-1 px-4 rounded-r " + (currentPage < nPages ? " text-gray-800" : " text-gray-500")}
+                className={"text-xs bg-blue-50 hover:bg-blue-700-accent hover:text-white font-bold py-2 px-4 rounded-r " + (currentPage < nPages ? " text-gray-800" : " text-gray-500")}
                 onClick={nextPage}
             >
-                Next
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 26 26" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M9 5l7 7-7 7" />
+                </svg>
             </button>
         </div>
     );

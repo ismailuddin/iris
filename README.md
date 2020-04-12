@@ -1,7 +1,11 @@
+<p align="center">
+  <img height="140" width="140" src="artwork/iris-logo.png">
+  <h3 align="center">Iris - Data labelling</h3>
+</p>
 # Iris
 > A browser based UI for labelling image files that tracks the labels using a database, rather than using folders and paths
 
-![Iris](preview.png)
+![Iris](artwork/iris_preview.png)
 
 ## Why use Iris?
 * Label thousands of images (or possibly millions?) easily without having to use a file manager that slows down.

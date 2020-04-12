@@ -20,7 +20,7 @@ function DropTargets({ category, setFileCategory, colour, disabled }) {
     });
     if (!disabled) {
         return (
-            <div ref={drop} className={`block w-full text-center py-4 mb-2 bg-${colour}-100 border border-${colour}-200 rounded-lg`}>
+            <div ref={drop} className={`block w-full text-center py-4 mb-2 bg-${colour}-100 rounded-lg`}>
                 <span className={`font-bold text-${colour}-900`}>
                     {category}
                 </span>
