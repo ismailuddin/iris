@@ -1,5 +1,5 @@
 # Iris
-> A browser based UI for labelling image files, with built in tracking to make management of labelled data hassle free.
+> A browser based UI for labelling image files that tracks the labels using a database, rather than using folders and paths
 
 ![Iris](preview.png)
 
@@ -7,7 +7,7 @@
 * Label thousands of images (or possibly millions?) easily without having to use a file manager that slows down.
   * Iris uses pagination to view subsets of your data, so the platform doesn't slow down with large quantities of images.
 * Keep track of all your labels using a database.
-  * Iris stores the labels for your data in an SQLite database file in a `.iris` directory that is created in the root of your data folder. This means your folder path doesn't dictate the label.
+  * Iris stores the labels for your data in an SQLite database file in a `.iris` directory that is created in the root of your data folder. This decouples labels from the directory paths, helping to avoid mistakes.
 * Simple and easy to use drag and drop UI.
   * Images can be labelled using simple drag and drop interactions, making it easy for anyone to use.
 
@@ -46,8 +46,27 @@ The argument `-f` specifies the folder to look in for your images. An additional
 
 **Iris** will launch on port 5000, from where you can go and begin labelling your data.
 
+### Tags
+Images can also take on tags, which are initially inferred based on the sub-directories. That is any directory below the top level directory. For example:
+
+```
+data/
+    tag_1/
+        another_tag/
+            file_1.png
+            file_2.png
+            file_3.png
+    tag_2/
+        file_4.png
+        file_5.png
+        file_6.png
+```
+
+These tags show up in the browser based UI after hovering over the **Tag** label.
 
 ## To do
 
-- [ ] Write unit tests for Python backend
+- [ ] Ability to change tags using drag and drop interface
+- [ ] Add new categories using browser UI
 - [ ] Write unit tests for JS frontend
+- [ ] Write unit tests for Python backend
