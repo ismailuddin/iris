@@ -2,6 +2,7 @@
   <img height="140" width="140" src="artwork/iris-logo.png">
   <h3 align="center">Iris - Data labelling</h3>
 </p>
+
 # Iris
 > A browser based UI for labelling image files that tracks the labels using a database, rather than using folders and paths
 
@@ -69,7 +70,7 @@ data/
 These tags show up in the browser based UI after hovering over the **Tag** label.
 
 ## To do
-
+- [ ] Python API to access labels from database
 - [ ] Ability to change tags using drag and drop interface
 - [ ] Add new categories using browser UI
 - [ ] Write unit tests for JS frontend
