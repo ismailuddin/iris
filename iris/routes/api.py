@@ -8,6 +8,7 @@ api = Blueprint("api", __name__)
 
 @api.route("/api/get_files", methods=["POST"])
 def get_files():
+    """Returns all the files present in the database"""
     body = request.get_json()
     categories = sorted(get_uniq_categories())
     if body["category"] is None:
@@ -29,6 +30,7 @@ def get_files():
 
 @api.route("/api/file/<int:_id>/set_label", methods=["POST"])
 def set_file_label(_id: int):
+    """Sets the file labels on the file specified by the ID"""
     body = request.get_json()
     file = File.query.get(_id)
     file.category = body["category"]

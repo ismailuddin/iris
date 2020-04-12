@@ -9,4 +9,5 @@ general = Blueprint(
 
 @general.route("/")
 def home():
+    """Route for the home page"""
     return render_template("general/home.html")

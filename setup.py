@@ -13,11 +13,11 @@ with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
 setup(
     name="iris",
     version="0.1.0",
-    url="https://www.github.com/ismailuddin/data-labelling",
+    url="https://www.github.com/ismailuddin/iris",
     license='MIT',
     author="Ismail Uddin",
     author_email="ismail.sameeuddin@gmail.com",
-    description="Web platform for labelling data",
+    description="Browser based platform for labelling data",
     long_description=long_description,
     long_description_content_type='text/markdown',
     packages=find_packages(exclude=('tests',)),

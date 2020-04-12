@@ -25,7 +25,6 @@ def launch(folder: str, extension: str, port: int):
     )
     database_dir.mkdir(exist_ok=True, parents=True)
     database_file = pathlib.Path(os.path.join(database_dir, "data.db"))
-    # glob_pattern = os.path.join(folder, "**", f"*{extension}")
     database_uri = f"sqlite:///{database_file}"
     app = create_app(
         instance_path=os.path.join(folder),

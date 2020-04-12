@@ -1,5 +1,5 @@
 # Iris
-> A web platform for labelling image files, with built in tracking to make management of labelled data hassle free.
+> A browser based UI for labelling image files, with built in tracking to make management of labelled data hassle free.
 
 ![Iris](preview.png)
 
@@ -45,3 +45,9 @@ $   iris launch -f data
 The argument `-f` specifies the folder to look in for your images. An additional argument `-e` is used to specify the extension of images to look for. By default, it is set to `.png`.
 
 **Iris** will launch on port 5000, from where you can go and begin labelling your data.
+
+
+## To do
+
+- [ ] Write unit tests for Python backend
+- [ ] Write unit tests for JS frontend
