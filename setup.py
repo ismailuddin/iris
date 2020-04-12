@@ -4,10 +4,26 @@ import re
 
 from setuptools import find_packages
 from setuptools import setup
+from setuptools.command.install import install
+from subprocess import run
+
 
 this_directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
+
+
+class InstallCommmand(install):
+    """Customised install command"""
+
+    def run(self):
+        run([
+            "npm", "install"
+        ], check=True)
+        run([
+            "npx", "webpack"
+        ], check=True)
+        install.run(self)
 
 
 setup(
@@ -30,6 +46,9 @@ setup(
     ],
     entry_points={
         "console_scripts": ["iris=iris.__main__:main"]
+    },
+    cmdclass={
+        "install": InstallCommmand
     },
     include_package_data=True
 )

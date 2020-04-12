@@ -69,8 +69,43 @@ data/
 
 These tags show up in the browser based UI after hovering over the **Tag** label.
 
+### Programmatic API
+Once **iris** has been launched inside a directory and the `.iris` folder has been
+setup, you can use the Python API to get the labels and make any more changes
+programmatically.
+
+#### Getting the list of files
+The complete list of files can be returned using the following snippet. The `folder` argument to the `Query` class is the relative path to the folder where your images are stored.
+
+```python
+from iris.api.files import Query
+
+q = Query(folder="../images/")
+df = q.get_all_files()
+```
+
+Example output:
+
+id |	path |	filename |	category |	tags
+--|--|--|--|--|
+270 |	images/heti/clf/ignore/2Sph8IbCgnU.png |	2Sph8IbCgnU.png	|heti |	[clf, ignore]
+271 |	images/heti/clf/ignore/1aiDVT31RRE.png |	1aiDVT31RRE.png	|heti |	[clf, ignore]
+272 |	images/heti/clf/ignore/4GLI-k4wmFg.png |	4GLI-k4wmFg.png	|heti |	[clf, ignore]
+273 |	images/heti/clf/ignore/-wuFyjSeLec.png |	-wuFyjSeLec.png	|meji |	[clf, ignore]
+
+#### Modifying a file's attributes
+You can modify any or all of the attributes of a file using the following snippet.
+
+```python
+from iris.api.files import Query
+
+q = Query(folder="../images/")
+q.update_file(270, {"category": "new_category"})
+```
+
+The second argument, `file_kwargs`, is a dictionary whose keys should correspond to one of the columns in the DataFrame. If the key provided does not exist, it will be ignored.
+
 ## To do
-- [ ] Python API to access labels from database
 - [ ] Ability to change tags using drag and drop interface
 - [ ] Add new categories using browser UI
 - [ ] Write unit tests for JS frontend

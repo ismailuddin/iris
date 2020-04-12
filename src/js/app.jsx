@@ -110,20 +110,22 @@ export default class App extends Component {
         const getColour = colourIterator(colours);
         return (
             <div className="h-full flex flex-col">
-                <div id="header" className="py-3 px-4 flex bg-white z-10 shadow">
-                    <CategorySelector
-                        categories={this.state.categories}
-                        selectedCategory={this.state.category}
-                        setCategory={this.setCategory}
-                    />
-                    <div className="py-2 mr-4 border-r text-blue-800 border-gray-300 pr-4 text-xs">
-                        <span className="mr-2 uppercase tracking-wide text-blue-700-accent font-extrabold">items</span>
-                        {(this.state.currentPage - 1) * this.state.nPerPage} - {(this.state.currentPage * this.state.nPerPage) <= this.state.totalItems ? this.state.currentPage * this.state.nPerPage : this.state.totalItems} / {this.state.totalItems}
+                <div id="header" className="py-3 px-4 flex justify-between flex-wrap bg-white z-10 shadow">
+                    <div className="flex items-center">
+                        <CategorySelector
+                            categories={this.state.categories}
+                            selectedCategory={this.state.category}
+                            setCategory={this.setCategory}
+                        />
+                        <div className="py-2 mr-4 border-r text-blue-800 border-gray-300 pr-4 text-xs">
+                            <span className="mr-2 uppercase tracking-wide text-blue-700-accent font-extrabold">items</span>
+                            {(this.state.currentPage - 1) * this.state.nPerPage} - {(this.state.currentPage * this.state.nPerPage) <= this.state.totalItems ? this.state.currentPage * this.state.nPerPage : this.state.totalItems} / {this.state.totalItems}
+                        </div>
+                        <ItemsPerPageSelector 
+                            nPerPage={this.state.nPerPage}
+                            setNPerPage={this.setNPerPage}
+                        />
                     </div>
-                    <ItemsPerPageSelector 
-                        nPerPage={this.state.nPerPage}
-                        setNPerPage={this.setNPerPage}
-                    />
                     <Paginator
                         currentPage={this.state.currentPage}
                         nPages={this.state.nPages}
@@ -132,14 +134,14 @@ export default class App extends Component {
                 </div>
                 <DndProvider backend={Backend}>
                     <div className="flex-grow-1 h-full flex overflow-y-scroll">
-                        <div className="w-5/6 p-2 pt-0 h-full">
+                        <div className="w-2/3 lg:w-5/6 p-2 pt-0 h-full">
                             <FileGrid
                                 files={this.state.files.filter(
                                     f => f.category == this.state.category
                                 )}
                             />
                         </div>
-                        <div className="w-1/6 py-2 px-6 bg-white border-l border-gray-300">
+                        <div className="w-1/3 lg:w-1/6 py-2 px-6 bg-white border-l border-gray-300">
                             <h5 className="text-gray-600 text-kg font-bold mb-2">Drag images here to relabel</h5>
                             {this.state.categories
                                 .map((category, i) => (

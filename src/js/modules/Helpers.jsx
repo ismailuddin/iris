@@ -108,7 +108,7 @@ function Paginator({ nPages, currentPage, setPage }) {
         }
     }
     return (
-        <div className="inline-flex mr-4 right-0 absolute">
+        <div className="inline-flex mr-4">
             <button
                 className={"text-xs bg-blue-50 hover:bg-blue-700-accent hover:text-white font-bold py-2 px-4 rounded-l " + (currentPage == 1 ? " text-gray-500" : " text-gray-800")}
                 onClick={prevPage}

@@ -35,9 +35,3 @@ class File(db.Model):
             "category": self.category,
             "tags": [t.name for t in self.tags]
         }
-
-
-# def get_uniq_categories() -> List[str]:
-#     _categories = db.session.query(File.category).distinct().all()
-#     categories = [_c.category for _c in _categories]
-#     return categories
