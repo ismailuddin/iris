@@ -4,12 +4,13 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 import _ from "lodash";
 import FileGrid from './modules/FileGrid';
-import DropTargets  from './modules/DropTargets';
+import DropTarget  from './modules/DropTarget';
 import { 
     CategorySelector,
     ItemsPerPageSelector,
     Paginator 
 } from './modules/Helpers';
+import chroma from 'chroma-js'
 
 
 function* colourIterator(colours) {
@@ -24,12 +25,21 @@ function* colourIterator(colours) {
 }
 
 const colours = [
-    "teal",
+    "light-blue",
+    "pink",
+    "cyan",
     "blue",
-    "purple",
+    "deep-purple",
+    "green",
+    "teal",
+    "yellow",
     "orange",
+    "lime",
+    "indigo",
+    "purple",
     "red",
-    "green"
+    "deep-orange",
+    "brown",
 ];
 
 export default class App extends Component {
@@ -141,18 +151,20 @@ export default class App extends Component {
                                 )}
                             />
                         </div>
-                        <div className="w-1/3 lg:w-1/6 py-2 px-6 bg-white border-l border-gray-300">
-                            <h5 className="text-gray-600 text-kg font-bold mb-2">Drag images here to relabel</h5>
-                            {this.state.categories
-                                .map((category, i) => (
-                                    <DropTargets
-                                        category={category}
-                                        key={i}
-                                        disabled={category == this.state.category}
-                                        setFileCategory={this.setFileCategory}
-                                        colour={getColour.next()["value"]}
-                                    />
-                            ))}
+                        <div className="w-1/3 lg:w-1/6 py-2 px-6 overflow-y-scroll bg-white border-l border-gray-300">
+                            <h5 className="block text-gray-600 text-kg font-bold mb-2">Drag images here to relabel</h5>
+                            <div className="flex flex-wrap">
+                                {this.state.categories
+                                    .map((category, i) => (
+                                        <DropTarget
+                                            category={category}
+                                            key={i}
+                                            disabled={category == this.state.category}
+                                            setFileCategory={this.setFileCategory}
+                                            colour={getColour.next()["value"]}
+                                        />
+                                ))}
+                            </div>
                         </div>
                     </div>
                 </DndProvider>

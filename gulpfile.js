@@ -13,7 +13,7 @@ gulp.task('sass', function() {
             require('autoprefixer'),
             require('cssnano')
         ]))
-        .pipe(gulp.dest('public/css/'))
+        .pipe(gulp.dest('iris/public/css/'))
 });
 
 gulp.task('sass:watch', function() {

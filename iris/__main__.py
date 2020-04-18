@@ -64,4 +64,4 @@ def launch(folder: str, extension: str, host: str, port: int):
         StandaloneApplication(app, options).run()
 
 if __name__ == "__main__":
-    launch()
+    launch()    

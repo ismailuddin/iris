@@ -6,7 +6,7 @@ const config = {
     main: './src/js/index.js',
   },
   output: {
-    path: path.resolve(__dirname, 'public/js/modules/'),
+    path: path.resolve(__dirname, 'iris/public/js/modules/'),
     filename: '[name].js'
   },
   module: {
