@@ -15,9 +15,6 @@ function File({ file }) {
             id: file.id,
             category: file.category
         },
-        end: (item, monitor) => {
-            console.log(monitor.getDropResult());
-        },
         collect: monitor => ({
             isDragging: !!monitor.isDragging
         })

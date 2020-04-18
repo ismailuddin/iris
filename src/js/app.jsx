@@ -4,11 +4,12 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 import _ from "lodash";
 import FileGrid from './modules/FileGrid';
-import DropTarget  from './modules/DropTarget';
-import { 
+import DropTarget from './modules/DropTarget';
+import {
     CategorySelector,
     ItemsPerPageSelector,
-    Paginator 
+    Paginator,
+    ReorganiseFilesButton
 } from './modules/Helpers';
 import chroma from 'chroma-js'
 
@@ -73,7 +74,7 @@ export default class App extends Component {
         this.setState({
             currentPage: pageNumber
         },
-        () => this.getFiles());
+            () => this.getFiles());
     }
 
     setCategory = category => {
@@ -91,7 +92,7 @@ export default class App extends Component {
             nPerPage: number,
             currentPage: 1
         },
-        () => this.getFiles());
+            () => this.getFiles());
     }
 
     getFiles = () => {
@@ -131,10 +132,11 @@ export default class App extends Component {
                             <span className="mr-2 uppercase tracking-wide text-blue-700-accent font-extrabold">items</span>
                             {(this.state.currentPage - 1) * this.state.nPerPage} - {(this.state.currentPage * this.state.nPerPage) <= this.state.totalItems ? this.state.currentPage * this.state.nPerPage : this.state.totalItems} / {this.state.totalItems}
                         </div>
-                        <ItemsPerPageSelector 
+                        <ItemsPerPageSelector
                             nPerPage={this.state.nPerPage}
                             setNPerPage={this.setNPerPage}
                         />
+                        <ReorganiseFilesButton/>
                     </div>
                     <Paginator
                         currentPage={this.state.currentPage}
@@ -163,7 +165,7 @@ export default class App extends Component {
                                             setFileCategory={this.setFileCategory}
                                             colour={getColour.next()["value"]}
                                         />
-                                ))}
+                                    ))}
                             </div>
                         </div>
                     </div>

@@ -9,9 +9,6 @@ function DropTarget({ category, setFileCategory, colour, disabled }) {
         drop: (item, monitor) => {
             let file = monitor.getItem();
             setFileCategory(file.id, category);
-            return {
-                target: "Got file"
-            };
         },
         collect: mon => ({
             isOver: !!mon.isOver(),

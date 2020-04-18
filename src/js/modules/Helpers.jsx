@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 
 function CategorySelector({ categories, selectedCategory, setCategory }) {
@@ -147,9 +148,50 @@ Paginator.propTypes = {
     setPage: PropTypes.func
 }
 
+function ReorganiseFilesButton() {
+    const [loading, setLoading] = useState(false);
+
+    const makeRequest = () => {
+        setLoading(true);
+        axios
+            .get("/api/reorganise_files")
+            .then(response => {
+                setLoading(false);
+                window.location = "/";
+            })
+            .catch(err => {
+                console.log(err);
+                alert("Error processing files. Please try again!");
+                setLoading(false);
+            })
+    }
+
+    if (loading) {
+        return (
+            <div className="py-2 px-4 uppercase text-xs font-bold rounded-md bg-blue-50 text-blue-700">
+                Processing...  
+            </div>
+
+        )
+    } else {
+        return (
+            <button
+                onClick={makeRequest}
+                className="py-2 px-4 uppercase text-xs font-bold rounded-md bg-blue-50 text-blue-700 hover:bg-blue-700-accent hover:text-white focus:outline-none"
+            >
+                <svg className="mr-2 h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                Reorganise files
+            </button>
+        )
+    }
+}
+
 
 export {
     CategorySelector,
     ItemsPerPageSelector,
-    Paginator
+    Paginator,
+    ReorganiseFilesButton
 }

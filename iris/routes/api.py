@@ -1,6 +1,6 @@
-from flask import request, Blueprint, jsonify
+from flask import request, Blueprint, jsonify, Response
 from ..models.files import File
-from ..utils.files import get_uniq_categories
+from ..utils.files import get_uniq_categories, get_mismatched_files, reorganise_files
 from .. import db
 
 api = Blueprint("api", __name__)
@@ -38,3 +38,18 @@ def set_file_label(_id: int):
     return jsonify({
         "response": f"File {file.filename} successfully re-labelled"
     })
+
+
+@api.route("/api/reorganise_files")
+def perform_file_reorganisation():
+    mismatched_files = get_mismatched_files()
+    if mismatched_files.shape[0] > 0:
+        reorganise_files(mismatched_files)
+        return Response(
+            "Files successfully moved",
+            status=200
+        )
+    return Response(
+        "No files to move!",
+        status=200
+    )

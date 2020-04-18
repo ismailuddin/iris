@@ -1,11 +1,13 @@
 import glob
 import os
-import pathlib
+from pathlib import Path
+import shutil
 from typing import List
 from tqdm import tqdm
 from ..models.files import File, Tag
 from ..models.config import ConfigValue
 from .. import db
+import pandas as pd
 
 
 def get_uniq_categories() -> List[str]:
@@ -17,7 +19,7 @@ def get_uniq_categories() -> List[str]:
     """
     folder = ConfigValue.get_folder()
     _categories = glob.glob(os.path.join(folder, "**"))
-    return [pathlib.Path(p).parts[-1] for p in _categories]
+    return [Path(p).parts[-1] for p in _categories]
 
 
 def recursive_file_discover(folder: str) -> tuple:
@@ -57,7 +59,7 @@ def build_filelist(folder: str, extension: str = ".png") -> tuple:
                 if file[0] == ".":
                     continue
                 path = os.path.join(root, file)
-                fp = pathlib.Path(path)
+                fp = Path(path)
                 category = fp.parts[1]
                 if len(fp.parts) > 3:
                     tags = list(fp.parts[2:-1])
@@ -100,4 +102,53 @@ def populate_db_with_filelist(filelist: List[dict], all_tags: List[str]) -> None
             tags=tag_instances
         )
         db.session.add(f)
+    db.session.commit()
+
+def reform_path(path: Path, category: str) -> str:
+    """Reforms the path to include the newly assigned category
+    
+    Args:
+        path (pathlib.Path): Path of the file
+        category (str): New category
+    
+    Returns:
+        str: Reformed path
+    """
+    p = Path(path)
+    parts = list(p.parts)
+    parts[1] = category
+    return os.path.join(*parts)
+
+
+def get_mismatched_files() -> pd.DataFrame:
+    """Generates a DataFrame of all files in the database.
+    
+    Returns:
+        pd.DataFrame: Pandas DataFrame of database Files table.
+    """
+    _files = File.query.all()
+    if len(_files) > 0:
+        files = [f.json for f in _files]
+        files = pd.DataFrame(files)
+        files["path_category"] = files.path.apply(lambda x: Path(x).parts[1])
+        return files[files.category != files.path_category].copy()
+    return None
+
+
+def reorganise_files(mismatched_files: pd.DataFrame):
+    """Reorganises files into the new directories according to the
+    newly assigned categories.
+    """
+    
+    mismatched_files["dest"] = mismatched_files[["path", "category"]].apply(
+        lambda x: reform_path(x["path"], x["category"]), axis=1
+    )
+    for ix in mismatched_files.index:
+        row = mismatched_files.loc[ix]
+        file_id = int(row["id"])
+        file: File = File.query.get(file_id)
+        src, dest = row["path"], row["dest"]
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        shutil.move(src, dest)
+        file.path = dest
     db.session.commit()
