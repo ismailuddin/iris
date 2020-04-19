@@ -47,10 +47,18 @@ With the following project structure set up, navigate to the parent directory of
 $   iris launch -f data
 ```
 
-The argument `-f` specifies the folder to look in for your images.
+**Iris** launches by default on port 5000, from where you can go on and begin labelling your data.
 
+Argument | Description
+--|--
+-f | Folder to build database from
+-h | The host to run the server on
+-p | The port number to run the server on
 
-**Iris** will launch on port 5000, from where you can go and begin labelling your data.
+### Reorganise data
+To avoid any confusion between the re-labelled data, and the original categories inferred by the file paths of the images, a button labelled 'Reorganise data' is present in the toolbar.
+This will re-organise the files amongst the folders according to the new labels.
+
 
 ### Tags
 Images can also take on tags, which are initially inferred based on the sub-directories. That is any directory below the top level directory. For example:
