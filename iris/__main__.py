@@ -36,7 +36,7 @@ def main():
 @click.option("--folder", "-f", help="Folder to discover files")
 @click.option("--host", "-h", help="Host address to run server on", default="127.0.0.1")
 @click.option("--port", "-p", help="Port to run server on", default=5000)
-def launch(folder: str, extension: str, host: str, port: int):
+def launch(folder: str, host: str, port: int):
     database_dir = pathlib.Path(
         os.path.join(os.getcwd(), folder, ".iris")
     )
