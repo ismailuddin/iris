@@ -11,7 +11,6 @@ import {
     Paginator,
     ReorganiseFilesButton
 } from './modules/Helpers';
-import chroma from 'chroma-js'
 
 
 function* colourIterator(colours) {

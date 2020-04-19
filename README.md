@@ -9,7 +9,7 @@
 ![Iris](artwork/iris_preview.png)
 
 ## Why use Iris?
-* Label thousands of images (or possibly millions?) easily without having to use a file manager that slows down.
+* Label thousands of images (or possibly millions?) easily without having to use a file manager that slows down with too many files.
   * Iris uses pagination to view subsets of your data, so the platform doesn't slow down with large quantities of images.
 * Keep track of all your labels using a database.
   * Iris stores the labels for your data in an SQLite database file in a `.iris` directory that is created in the root of your data folder. This decouples labels from the directory paths, helping to avoid mistakes.
@@ -47,7 +47,8 @@ With the following project structure set up, navigate to the parent directory of
 $   iris launch -f data
 ```
 
-The argument `-f` specifies the folder to look in for your images. An additional argument `-e` is used to specify the extension of images to look for. By default, it is set to `.png`.
+The argument `-f` specifies the folder to look in for your images.
+
 
 **Iris** will launch on port 5000, from where you can go and begin labelling your data.
 
