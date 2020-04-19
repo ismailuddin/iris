@@ -152,3 +152,18 @@ def reorganise_files(mismatched_files: pd.DataFrame):
         shutil.move(src, dest)
         file.path = dest
     db.session.commit()
+
+
+def create_new_category(name: str):
+    """Creates a new folder to serve as a new category for files to be 
+    labelled as
+    
+    Args:
+        name (str): New category name
+    """
+    root_folder = ConfigValue.get_folder()
+    new_folder = os.path.join(root_folder, name)
+    new_folder_fp =Path(new_folder)
+    if new_folder_fp.is_dir():
+        raise FileExistsError("Folder already exists")
+    new_folder_fp.mkdir(exist_ok=True, parents=True)

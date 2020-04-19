@@ -169,21 +169,36 @@ function ReorganiseFilesButton() {
     if (loading) {
         return (
             <div className="py-2 px-4 uppercase text-xs font-bold rounded-md bg-blue-50 text-blue-700">
-                Processing...  
+                Processing...
             </div>
 
         )
     } else {
         return (
-            <button
-                onClick={makeRequest}
-                className="py-2 px-4 uppercase text-xs font-bold rounded-md bg-blue-50 text-blue-700 hover:bg-blue-700-accent hover:text-white focus:outline-none"
-            >
-                <svg className="mr-2 h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                </svg>
-                Reorganise files
-            </button>
+            <div className="relative">
+                <button
+                    onClick={makeRequest}
+                    className="group py-2 px-4 text-xs rounded-md bg-blue-50 text-blue-700 hover:bg-blue-700-accent hover:text-white focus:outline-none"
+                >
+                    <div className="invisible group-hover:visible absolute -bottom-12 z-20">
+                        <div className="relative mx-2">
+                            <div class="bg-black text-white text-xs rounded py-1 px-4 right-0 top-full shadow-md">
+                                Moves files into new folders
+                                <svg class="absolute text-black h-2 w-full left-0 bottom-full" x="0px" y="0px" viewBox="0 0 255 255">
+                                    <polygon class="fill-current" points="0,255 127.5,0 255,255" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <svg className="mr-2 h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <span className="font-bold uppercase">
+                        Reorganise files
+                    </span>
+                </button>
+                
+            </div>
         )
     }
 }

@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.bottom-full {
+	bottom: 100%;
+}
+.top-full {
+	top: 100%;
+}

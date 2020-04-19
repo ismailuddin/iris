@@ -11,6 +11,7 @@ import {
     Paginator,
     ReorganiseFilesButton
 } from './modules/Helpers';
+import AddNewCategoryModal from './modules/AddNewCategoryModal';
 
 
 function* colourIterator(colours) {
@@ -51,7 +52,8 @@ export default class App extends Component {
         nPages: 1,
         nPerPage: 50,
         currentPage: 1,
-        totalItems: 0
+        totalItems: 0,
+        newCategoryModalVisible: false
     };
 
     setFileCategory = (id, category) => {
@@ -112,6 +114,20 @@ export default class App extends Component {
             });
     }
 
+    addNewCategory = categoryName => {
+        axios
+            .post("/api/new_category", {
+                category_name: categoryName
+            })
+            .then(response => {
+                window.location = "/";
+            })
+            .catch(err => {
+                console.error(err);
+                alert("There was an error creating the new category!")
+            })
+    }
+
     componentDidMount() {
         this.getFiles();
     }
@@ -135,7 +151,7 @@ export default class App extends Component {
                             nPerPage={this.state.nPerPage}
                             setNPerPage={this.setNPerPage}
                         />
-                        <ReorganiseFilesButton/>
+                        <ReorganiseFilesButton />
                     </div>
                     <Paginator
                         currentPage={this.state.currentPage}
@@ -164,7 +180,22 @@ export default class App extends Component {
                                             setFileCategory={this.setFileCategory}
                                             colour={getColour.next()["value"]}
                                         />
-                                    ))}
+                                    ))
+                                }
+                                <button
+                                    className="mt-2 p-1 w-full text-xs flex items-center font-bold uppercase h-full justify-center py-2 px-2 box-border bg-blue-50 text-blue-700-accent rounded-full hover:bg-blue-700-accent hover:text-white focus:outline-none"
+                                    onClick={() => this.setState({newCategoryModalVisible: true})}
+                                >
+                                    <svg className="inline h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    Add new category
+                                </button>
+                                <AddNewCategoryModal
+                                    show={this.state.newCategoryModalVisible}
+                                    onHide={() => this.setState({newCategoryModalVisible: false})}
+                                    addNewCategory={this.addNewCategory}
+                                />
                             </div>
                         </div>
                     </div>

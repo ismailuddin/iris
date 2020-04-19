@@ -1,6 +1,11 @@
 from flask import request, Blueprint, jsonify, Response
 from ..models.files import File
-from ..utils.files import get_uniq_categories, get_mismatched_files, reorganise_files
+from ..utils.files import (
+    get_uniq_categories,
+    get_mismatched_files,
+    reorganise_files,
+    create_new_category
+)
 from .. import db
 
 api = Blueprint("api", __name__)
@@ -53,3 +58,14 @@ def perform_file_reorganisation():
         "No files to move!",
         status=200
     )
+
+
+@api.route("/api/new_category", methods=["POST"])
+def new_category():
+    body = request.get_json()
+    category_name = body["category_name"]
+    try:
+        create_new_category(category_name)
+        return Response(status=200)
+    except FileExistsError:
+        return Response(status=500)
