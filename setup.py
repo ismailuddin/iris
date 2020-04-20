@@ -10,6 +10,9 @@ this_directory = os.path.abspath(os.path.dirname(__file__))
 with open(os.path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+with open("requirements.txt", "r") as file:
+    requirements = [x.strip() for x in file.readlines()]
+
 setup(
     name="iris",
     version="0.1.0",
@@ -21,7 +24,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     packages=find_packages(exclude=('tests',)),
-    install_requires=[],
+    install_requires=requirements,
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
