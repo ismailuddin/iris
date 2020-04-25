@@ -14,7 +14,7 @@ with open("requirements.txt", "r") as file:
     requirements = [x.strip() for x in file.readlines()]
 
 setup(
-    name="iris",
+    name="iris-image-labelling",
     version="0.1.0",
     url="https://www.github.com/ismailuddin/iris",
     license='MIT',

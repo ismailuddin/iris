@@ -1,12 +1,12 @@
 <p align="center">
-  <img height="140" width="140" src="artwork/iris-logo.png">
+  <img height="140" width="140" src="https://github.com/ismailuddin/iris/raw/master/artwork/iris-logo.png">
   <h3 align="center">Iris - Data labelling</h3>
 </p>
 
 # Iris
 > A browser based UI for labelling image files that tracks the labels using a database, rather than using folders and paths
 
-![Iris](artwork/iris_preview.png)
+![Iris](https://github.com/ismailuddin/iris/raw/master/artwork/iris_preview.png)
 
 ## Why use Iris?
 * Label thousands of images (or possibly millions?) easily without having to use a file manager that slows down with too many files.
@@ -17,10 +17,10 @@
   * Images can be labelled using simple drag and drop interactions, making it easy for anyone to use.
 
 ## Installation
-To install **iris**, first clone the Git repository and navigate into the project folder.
+To install **iris**, use the following command:
 
 ```shell
-$   pip install .
+$   pip install iris-image-labelling
 ```
 
 ## Usage
