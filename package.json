@@ -33,7 +33,7 @@
     "@babel/runtime": "^7.8.7",
     "axios": "^0.19.2",
     "grunt": "^1.0.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "react": "^16.13.0",
     "react-dnd": "^10.0.2",
     "react-dnd-html5-backend": "^10.0.2",
