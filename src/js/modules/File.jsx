@@ -24,7 +24,7 @@ function File({ file }) {
             ref={drag}
             className="flex-none m-2 w-40 transition duration-300 px-4 py-2 rounded bg-white hover:bg-gray-100 shadow-sm text-sm text-gray-700"
         >
-            <img className="mb-1" src={`/images/${file.path}`} alt=""/>
+            <img className="mb-1" src={`/images/${file.id}`} alt=""/>
             <div className="block">
                 {file.tags.length > 0 ? (
                     <div className="group relative inline-block hover:bg-gray-300 rounded-full bg-blue-50 text-blue-700-accent text-xxs font-extrabold px-2 py-1">

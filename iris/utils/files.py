@@ -10,10 +10,23 @@ from .. import db
 import pandas as pd
 
 
+def get_folder_rel_path(filepath: str, folder: str) -> str:
+    """Returns the filepath relative to the provided folder
+
+    Args:
+        filepath (str): Absolute filepath of image
+        folder (str): Absolute filepath of the folder
+
+    Returns:
+        str: Relative filepath
+    """
+    return os.path.relpath(filepath, os.path.commonprefix([folder, filepath]))
+
+
 def get_uniq_categories() -> List[str]:
     """Infers the categories for the files based on the top level
     directories in the specified folder
-    
+
     Returns:
         List[str]: List of categories
     """
@@ -24,10 +37,10 @@ def get_uniq_categories() -> List[str]:
 
 def recursive_file_discover(folder: str) -> tuple:
     """Generator based approach to discovering files in the specified folder
-    
+
     Args:
         folder (str): The folder to search in
-    
+
     Yields:
         tuple: The root path as the first element, and a list of the files
     """
@@ -37,12 +50,12 @@ def recursive_file_discover(folder: str) -> tuple:
 
 def build_filelist(folder: str, extension: str = ".png") -> tuple:
     """Builds a file list with associated metadata for each file.
-    
+
     Args:
         folder (str): The folder to look inside
         extension (str, optional): The extension to filter the files on.
             Defaults to ".png".
-    
+
     Returns:
         tuple: First element is a list of files represented by a dictionary
             with metadata, second element is a list of the discovered tags
@@ -60,27 +73,32 @@ def build_filelist(folder: str, extension: str = ".png") -> tuple:
                     continue
                 path = os.path.join(root, file)
                 fp = Path(path)
-                category = fp.parts[1]
+                rel_path = get_folder_rel_path(fp, folder)
+                category = Path(rel_path).parts[0]
                 if len(fp.parts) > 3:
                     tags = list(fp.parts[2:-1])
                 else:
                     tags = []
-                filelist.append({
-                    "path": path,
-                    "filename": fp.name,
-                    "tags": tags,
-                    "category": category
-                })
+                filelist.append(
+                    {
+                        "path": path,
+                        "filename": fp.name,
+                        "tags": tags,
+                        "category": category,
+                    }
+                )
                 all_tags.extend(tags)
         except StopIteration:
             break
     return filelist, all_tags
 
 
-def populate_db_with_filelist(filelist: List[dict], all_tags: List[str]) -> None:
+def populate_db_with_filelist(
+    filelist: List[dict], all_tags: List[str]
+) -> None:
     """Populates the database with the file list built using the
     `build_filelist()` function.
-    
+
     Args:
         filelist (List[dict]): The filelist output of the `build_filelist()`
             function
@@ -93,44 +111,52 @@ def populate_db_with_filelist(filelist: List[dict], all_tags: List[str]) -> None
         tag_dict[tag] = t
     for file in tqdm(filelist):
         file_tags = file["tags"]
-        _tag_instances = list(filter(lambda x: x[0] in file_tags, tag_dict.items()))
+        _tag_instances = list(
+            filter(lambda x: x[0] in file_tags, tag_dict.items())
+        )
         tag_instances = [x[1] for x in _tag_instances]
         f = File(
             path=file["path"],
             filename=file["filename"],
             category=file["category"],
-            tags=tag_instances
+            tags=tag_instances,
         )
         db.session.add(f)
     db.session.commit()
 
-def reform_path(path: Path, category: str) -> str:
+
+def reform_path(filepath: Path, category: str, folder_abspath: str) -> str:
     """Reforms the path to include the newly assigned category
-    
+
     Args:
-        path (pathlib.Path): Path of the file
+        filepath (pathlib.Path): Path of the file
         category (str): New category
-    
+        folder_abspath (str): Absolute path to the root foolder
+
     Returns:
         str: Reformed path
     """
-    p = Path(path)
-    parts = list(p.parts)
-    parts[1] = category
-    return os.path.join(*parts)
+    fp = get_folder_rel_path(filepath, folder_abspath)
+    fp = Path(fp)
+    parts = list(fp.parts)
+    parts[0] = category
+    return os.path.join(folder_abspath, *parts)
 
 
 def get_mismatched_files() -> pd.DataFrame:
     """Generates a DataFrame of all files in the database.
-    
+
     Returns:
         pd.DataFrame: Pandas DataFrame of database Files table.
     """
     _files = File.query.all()
+    folder = ConfigValue.get_folder()
     if len(_files) > 0:
         files = [f.json for f in _files]
         files = pd.DataFrame(files)
-        files["path_category"] = files.path.apply(lambda x: Path(x).parts[1])
+        files["path_category"] = files.path.apply(
+            lambda x: Path(get_folder_rel_path(x, folder)).parts[0]
+        )
         return files[files.category != files.path_category].copy()
     return None
 
@@ -139,9 +165,9 @@ def reorganise_files(mismatched_files: pd.DataFrame):
     """Reorganises files into the new directories according to the
     newly assigned categories.
     """
-    
+    folder = ConfigValue.get_folder()
     mismatched_files["dest"] = mismatched_files[["path", "category"]].apply(
-        lambda x: reform_path(x["path"], x["category"]), axis=1
+        lambda x: reform_path(x["path"], x["category"], folder), axis=1
     )
     for ix in mismatched_files.index:
         row = mismatched_files.loc[ix]
@@ -155,15 +181,15 @@ def reorganise_files(mismatched_files: pd.DataFrame):
 
 
 def create_new_category(name: str):
-    """Creates a new folder to serve as a new category for files to be 
+    """Creates a new folder to serve as a new category for files to be
     labelled as
-    
+
     Args:
         name (str): New category name
     """
     root_folder = ConfigValue.get_folder()
     new_folder = os.path.join(root_folder, name)
-    new_folder_fp =Path(new_folder)
+    new_folder_fp = Path(new_folder)
     if new_folder_fp.is_dir():
         raise FileExistsError("Folder already exists")
     new_folder_fp.mkdir(exist_ok=True, parents=True)

@@ -38,11 +38,13 @@ def main():
 @click.option("--port", "-p", help="Port to run server on", default=5000)
 def launch(folder: str, host: str, port: int):
     database_dir = pathlib.Path(
-        os.path.join(os.getcwd(), folder, ".iris")
+        os.path.join(os.getcwd(), ".iris")
     )
     database_dir.mkdir(exist_ok=True, parents=True)
     database_file = pathlib.Path(os.path.join(database_dir, "data.db"))
     database_uri = f"sqlite:///{database_file}"
+    if not os.path.isabs(folder):
+        folder = str(pathlib.Path(os.path.join(os.getcwd(), folder)))
     app = create_app(
         instance_path=os.path.join(folder),
         database_uri=database_uri
