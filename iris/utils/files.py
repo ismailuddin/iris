@@ -30,9 +30,8 @@ def get_uniq_categories() -> List[str]:
     Returns:
         List[str]: List of categories
     """
-    folder = ConfigValue.get_folder()
-    _categories = glob.glob(os.path.join(folder, "**"))
-    return [Path(p).parts[-1] for p in _categories]
+    categories = File.query.with_entities(File.category).distinct().all()
+    return [c for c, in categories]
 
 
 def recursive_file_discover(folder: str) -> tuple:
@@ -76,7 +75,7 @@ def build_filelist(folder: str, extension: str = ".png") -> tuple:
                 rel_path = get_folder_rel_path(fp, folder)
                 category = Path(rel_path).parts[0]
                 if len(fp.parts) > 3:
-                    tags = list(fp.parts[2:-1])
+                    tags = list(Path(rel_path).parts[1:-1])
                 else:
                     tags = []
                 filelist.append(
