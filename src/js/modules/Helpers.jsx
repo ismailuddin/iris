@@ -53,7 +53,7 @@ function ItemsPerPageSelector({ nPerPage, setNPerPage }) {
     const handleChange = e => {
         setNPerPage(e.target.value);
     };
-    const options = [1, 10, 25, 50, 100, 200];
+    const options = [1, 10, 25, 50, 100, 250, 500];
     return (
         <div className="mr-4 border-r border-gray-300 pr-4 pt-1 flex items-center">
             <label
