@@ -20,4 +20,4 @@ def home():
 @general.route("/images/<int:id>")
 def get_image(id: int):
     file = File.query.get(id)
-    return send_file(file.path)
+    return send_file(file.path, cache_timeout=-1)
