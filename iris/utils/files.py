@@ -30,9 +30,12 @@ def get_uniq_categories() -> List[str]:
     Returns:
         List[str]: List of categories
     """
-    categories = File.query.with_entities(File.category).distinct().all()
-    return [c for c, in categories]
-
+    folder = ConfigValue.get_folder()
+    _categories = glob.glob(os.path.join(folder, "**"))
+    folder_categories = [Path(p).parts[-1] for p in _categories]
+    _file_categories = File.query.with_entities(File.category).distinct().all()
+    file_categories = [c for c, in _file_categories]
+    return list(set(folder_categories + file_categories))
 
 def recursive_file_discover(folder: str) -> tuple:
     """Generator based approach to discovering files in the specified folder
