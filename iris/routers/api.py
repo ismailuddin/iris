@@ -1,35 +1,43 @@
+import math
 from typing import Optional
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
-# from ..models.files import File
-# from ..utils.files import (
-#     get_uniq_categories,
-#     get_mismatched_files,
-#     reorganise_files,
-#     create_new_category
-# )
-# from .. import db
-
+from ..models import File
+from ..utils.files import get_uniq_categories
+from ..dependencies import get_db
+from sqlalchemy.orm import Session
 
 api_router = APIRouter()
 
 
 @api_router.get("/api/get_files")
-def get_files(category: str = None, page: int = 1, per_page: int = 25):
+def get_files(
+    category: str = None,
+    page: int = 1,
+    per_page: int = 25,
+    db: Session = Depends(get_db),
+):
     """Returns all the files present in the database"""
     categories = sorted(get_uniq_categories())
     if category is None:
         category = categories[0]
-    paginator = File.query.filter_by(category=category).paginate(
-        page, per_page
+    query = (
+        db.query(File)
+        .filter_by(category=category)
     )
-    files = paginator.items
+    total = query.order_by(None).count()
+    files = (
+        query
+        .limit(per_page)
+        .offset((page - 1) * per_page)
+        .all()
+    )
     return {
         "categories": categories,
         "selected_category": category,
-        "n_pages": paginator.pages,
+        "n_pages": math.ceil(total / per_page),
         "files": [file.json for file in files],
-        "total": paginator.total
+        "total": total,
     }
 
 

@@ -98,10 +98,12 @@ export default class App extends Component {
 
     getFiles = () => {
         axios
-            .post("/api/get_files", {
-                page: Number(this.state.currentPage),
-                per_page: Number(this.state.nPerPage),
-                category: this.state.category
+            .get("/api/get_files", {
+                params: {
+                    page: Number(this.state.currentPage),
+                    per_page: Number(this.state.nPerPage),
+                    category: this.state.category
+                }
             })
             .then(response => {
                 this.setState({

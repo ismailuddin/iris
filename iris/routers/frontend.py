@@ -2,6 +2,7 @@ import os
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
+from ..config import Config
 
 
 PACKAGE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,8 +19,8 @@ def home(request: Request):
         dict(request=request)
     )
 
-@frontend_router.get("/images/{image_path}")
-def get_image():
+@frontend_router.get("/get_image")
+async def get_image(image_path: str):
     return FileResponse(
         os.path.join(
             os.getcwd(),

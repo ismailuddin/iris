@@ -31,3 +31,13 @@ class File(Base):
         lazy="subquery",
         backref=backref("files", lazy=True)
     )
+
+    @property
+    def json(self):
+        return {
+            "id": self.id,
+            "path": self.path,
+            "filename": self.filename,
+            "category": self.category,
+            "tags": [t.name for t in self.tags]
+        }
