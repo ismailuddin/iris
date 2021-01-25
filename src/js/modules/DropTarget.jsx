@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useDrop } from "react-dnd";
 import { ItemTypes } from './File';
 
@@ -36,6 +37,14 @@ function DropTarget({ category, setFileCategory, colour, disabled, onClick }) {
             </div>
         )
     }
+}
+
+DropTarget.propTypes = {
+    category: PropTypes.string,
+    setFileCategory: PropTypes.func,
+    colour: PropTypes.string,
+    disabled: PropTypes.bool,
+    onClick: PropTypes.func
 }
 
 export default DropTarget;
