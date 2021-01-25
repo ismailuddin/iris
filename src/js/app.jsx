@@ -60,8 +60,9 @@ export default class App extends Component {
         let file = _.find(this.state.files, f => f.id === id);
         let otherFiles = this.state.files.filter(f => f.id !== id);
         file["category"] = category;
-        axios.post(`/api/file/${id}/set_label`, {
-            category: category
+        axios.post(`/api/relabel_file`, {
+            _id: id,
+            category
         }).then(response => {
             if (response.status === 200) {
                 this.setState({

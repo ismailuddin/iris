@@ -1,7 +1,6 @@
 import math
 from typing import Optional
-from fastapi import APIRouter, Depends
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, Body
 from ..models import File
 from ..utils.files import get_uniq_categories
 from ..dependencies import get_db
@@ -41,16 +40,20 @@ def get_files(
     }
 
 
-# @api.route("/api/file/<int:_id>/set_label", methods=["POST"])
-# def set_file_label(_id: int):
-#     """Sets the file labels on the file specified by the ID"""
-#     body = request.get_json()
-#     file = File.query.get(_id)
-#     file.category = body["category"]
-#     db.session.commit()
-#     return jsonify({
-#         "response": f"File {file.filename} successfully re-labelled"
-#     })
+
+
+@api_router.post("/api/relabel_file")
+def relabel_file(
+    _id: int = Body(...),
+    category: str = Body(...),
+    db: Session = Depends(get_db)
+):
+    file = db.query(File).filter(File.id == _id).first()
+    file.category = category
+    db.commit()
+    return {
+        "msg": f"File {file.filename} successfully re-labelled"
+    }
 
 
 # @api.route("/api/reorganise_files")
