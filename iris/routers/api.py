@@ -1,8 +1,12 @@
 import math
 from typing import Optional
-from fastapi import APIRouter, Depends, Body
+from fastapi import APIRouter, Depends, Body, status
 from ..models import File
-from ..utils.files import get_uniq_categories
+from ..utils.files import (
+    get_uniq_categories,
+    create_new_category,
+    reorganise_files,
+)
 from ..dependencies import get_db
 from sqlalchemy.orm import Session
 
@@ -20,17 +24,9 @@ def get_files(
     categories = sorted(get_uniq_categories())
     if category is None:
         category = categories[0]
-    query = (
-        db.query(File)
-        .filter_by(category=category)
-    )
+    query = db.query(File).filter_by(category=category)
     total = query.order_by(None).count()
-    files = (
-        query
-        .limit(per_page)
-        .offset((page - 1) * per_page)
-        .all()
-    )
+    files = query.limit(per_page).offset((page - 1) * per_page).all()
     return {
         "categories": categories,
         "selected_category": category,
@@ -40,43 +36,23 @@ def get_files(
     }
 
 
-
-
 @api_router.post("/api/relabel_file")
 def relabel_file(
     _id: int = Body(...),
     category: str = Body(...),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
     file = db.query(File).filter(File.id == _id).first()
     file.category = category
     db.commit()
-    return {
-        "msg": f"File {file.filename} successfully re-labelled"
-    }
+    return {"msg": f"File {file.filename} successfully re-labelled"}
 
 
-# @api.route("/api/reorganise_files")
-# def perform_file_reorganisation():
-#     mismatched_files = get_mismatched_files()
-#     if mismatched_files.shape[0] > 0:
-#         reorganise_files(mismatched_files)
-#         return Response(
-#             "Files successfully moved",
-#             status=200
-#         )
-#     return Response(
-#         "No files to move!",
-#         status=200
-#     )
+@api_router.get("/api/reorganise_files", status_code=status.HTTP_202_ACCEPTED)
+def perform_file_reorganisation():
+    reorganise_files()
 
 
-# @api.route("/api/new_category", methods=["POST"])
-# def new_category():
-#     body = request.get_json()
-#     category_name = body["category_name"]
-#     try:
-#         create_new_category(category_name)
-#         return Response(status=200)
-#     except FileExistsError:
-#         return Response(status=500)
+@api_router.put("/api/new_category", status_code=status.HTTP_201_CREATED)
+def make_new_category(category_name: str):
+    create_new_category(category_name)

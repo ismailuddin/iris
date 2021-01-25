@@ -108,6 +108,7 @@ def populate_db_with_filelist(filelist: List[dict], all_tags: List[str]) -> None
         )
         db.add(f)
     db.commit()
+    db.close()
 
 
 def reform_path(path: Path, category: str) -> str:
@@ -132,7 +133,9 @@ def get_mismatched_files() -> pd.DataFrame:
     Returns:
         pd.DataFrame: Pandas DataFrame of database Files table.
     """
-    _files = File.query.all()
+    db = Database.session()
+    _files = db.query(File).all()
+    db.close()
     if len(_files) > 0:
         files = [f.json for f in _files]
         files = pd.DataFrame(files)
@@ -141,23 +144,27 @@ def get_mismatched_files() -> pd.DataFrame:
     return None
 
 
-def reorganise_files(mismatched_files: pd.DataFrame):
+def reorganise_files():
     """Reorganises files into the new directories according to the
     newly assigned categories.
     """
-
+    mismatched_files = get_mismatched_files()
+    if mismatched_files is None:
+        return
+    db = Database.session()
     mismatched_files["dest"] = mismatched_files[["path", "category"]].apply(
         lambda x: reform_path(x["path"], x["category"]), axis=1
     )
     for ix in mismatched_files.index:
         row = mismatched_files.loc[ix]
         file_id = int(row["id"])
-        file: File = File.query.get(file_id)
+        file = db.query(File).filter(File.id == file_id).first()
         src, dest = row["path"], row["dest"]
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         shutil.move(src, dest)
         file.path = dest
-    db.session.commit()
+    db.commit()
+    db.close()
 
 
 def create_new_category(name: str):
@@ -167,7 +174,7 @@ def create_new_category(name: str):
     Args:
         name (str): New category name
     """
-    root_folder = ConfigValue.get_folder()
+    root_folder = Config.FOLDER
     new_folder = os.path.join(root_folder, name)
     new_folder_fp = Path(new_folder)
     if new_folder_fp.is_dir():

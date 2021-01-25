@@ -119,10 +119,12 @@ export default class App extends Component {
 
     addNewCategory = categoryName => {
         axios
-            .post("/api/new_category", {
-                category_name: categoryName
+            .put("/api/new_category", null, {
+                params: {
+                    category_name: categoryName
+                }
             })
-            .then(response => {
+            .then(() => {
                 window.location = "/";
             })
             .catch(err => {

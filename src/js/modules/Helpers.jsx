@@ -155,7 +155,7 @@ function ReorganiseFilesButton() {
         setLoading(true);
         axios
             .get("/api/reorganise_files")
-            .then(response => {
+            .then(() => {
                 setLoading(false);
                 window.location = "/";
             })
