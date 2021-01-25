@@ -3,7 +3,7 @@ import { useDrop } from "react-dnd";
 import { ItemTypes } from './File';
 
 
-function DropTarget({ category, setFileCategory, colour, disabled }) {
+function DropTarget({ category, setFileCategory, colour, disabled, onClick }) {
     const [{ isOver, canDrop }, drop] = useDrop({
         accept: ItemTypes.FILE,
         drop: (item, monitor) => {
@@ -17,13 +17,13 @@ function DropTarget({ category, setFileCategory, colour, disabled }) {
     });
     if (!disabled) {
         return (
-            <div className="p-1 w-full text-sm">
+            <button onClick={onClick} className="p-1 w-full text-sm">
                 <div ref={drop} className={`flex items-center h-full justify-center py-3 px-2 box-border bg-${colour}-700 rounded-lg`}>
                     <span className={`font-bold text-${colour}-700-contrast`}>
                         {category}
                     </span>
                 </div>
-            </div>
+            </button>
         )
     } else {
         return (

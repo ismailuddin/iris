@@ -184,6 +184,7 @@ export default class App extends Component {
                                             disabled={category == this.state.category}
                                             setFileCategory={this.setFileCategory}
                                             colour={getColour.next()["value"]}
+                                            onClick={() => this.setCategory(category)}
                                         />
                                     ))
                                 }
