@@ -24,7 +24,7 @@ def launch(folder: str, host: str, port: int):
     engine = create_session_base(database_uri)
 
     from .utils.files import build_filelist, populate_db_with_filelist
-    from . import app
+    from .server import app
     from . import models
 
     if not database_file.exists():
