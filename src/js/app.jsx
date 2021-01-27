@@ -4,7 +4,7 @@ import { DndProvider, useDrag, useDrop } from "react-dnd";
 import Backend from "react-dnd-html5-backend";
 import _ from "lodash";
 import FileGrid from './modules/FileGrid';
-import DropTarget from './modules/DropTarget';
+import Category from './modules/Category';
 import {
     CategorySelector,
     ItemsPerPageSelector,
@@ -25,23 +25,24 @@ function* colourIterator(colours) {
     }
 }
 
-const colours = [
-    "light-blue",
-    "pink",
-    "cyan",
-    "blue",
-    "deep-purple",
-    "green",
-    "teal",
-    "yellow",
-    "orange",
-    "lime",
-    "indigo",
-    "purple",
+const colours = _.shuffle([
     "red",
-    "deep-orange",
-    "brown",
-];
+    "orange",
+    "amber",
+    "yellow",
+    "lime",
+    "green",
+    "emerald",
+    "teal",
+    "cyan",
+    "lightBlue",
+    "blue",
+    "indigo",
+    "violet",
+    "fuchsia",
+    "pink",
+    "rose"
+]);
 
 export default class App extends Component {
     state = {
@@ -141,15 +142,15 @@ export default class App extends Component {
         const getColour = colourIterator(colours);
         return (
             <div className="h-full flex flex-col">
-                <div id="header" className="py-3 px-4 flex justify-between flex-wrap bg-white z-10 shadow">
+                <div id="header" className="py-3 px-4 flex justify-between flex-wrap bg-white dark:bg-blueGray-900 z-10 shadow">
                     <div className="flex items-center">
                         <CategorySelector
                             categories={this.state.categories}
                             selectedCategory={this.state.category}
                             setCategory={this.setCategory}
                         />
-                        <div className="py-2 mr-4 border-r text-blue-800 border-gray-300 pr-4 text-xs">
-                            <span className="mr-2 uppercase tracking-wide text-blue-700-accent font-extrabold">items</span>
+                        <div className="py-2 mr-4 border-r text-blue-800 dark:text-blueGray-400 dark:border-blueGray-700 border-gray-300 pr-4 text-xs">
+                            <span className="mr-2 uppercase tracking-wide dark:text-blueGray-400 text-blue-700 font-extrabold">items</span>
                             {(this.state.currentPage - 1) * this.state.nPerPage} - {(this.state.currentPage * this.state.nPerPage) <= this.state.totalItems ? this.state.currentPage * this.state.nPerPage : this.state.totalItems} / {this.state.totalItems}
                         </div>
                         <ItemsPerPageSelector
@@ -173,12 +174,12 @@ export default class App extends Component {
                                 )}
                             />
                         </div>
-                        <div className="w-1/3 lg:w-1/6 py-2 px-6 overflow-y-scroll bg-white border-l border-gray-300">
-                            <h5 className="block text-gray-600 text-kg font-bold mb-2">Drag images here to relabel</h5>
+                        <div className="w-1/3 lg:w-1/6 py-2 px-6 overflow-y-scroll bg-white dark:bg-blueGray-700 border-l border-gray-300 dark:border-blueGray-600">
+                            <h5 className="block text-gray-600 dark:text-blueGray-100 text-kg font-bold mb-2">Drag images here to relabel</h5>
                             <div className="flex flex-wrap">
                                 {this.state.categories
                                     .map((category, i) => (
-                                        <DropTarget
+                                        <Category
                                             category={category}
                                             key={i}
                                             disabled={category == this.state.category}
@@ -189,7 +190,7 @@ export default class App extends Component {
                                     ))
                                 }
                                 <button
-                                    className="mt-2 p-1 w-full text-xs flex items-center font-bold uppercase h-full justify-center py-2 px-2 box-border bg-blue-50 text-blue-700-accent rounded-full hover:bg-blue-700-accent hover:text-white focus:outline-none"
+                                    className="mt-2 p-1 w-full text-xs flex items-center font-bold uppercase h-full justify-center py-2 px-2 box-border bg-blue-50 dark:bg-blueGray-500 dark:text-blueGray-300 text-blue-700 rounded-full hover:bg-blue-700 hover:text-white focus:outline-none"
                                     onClick={() => this.setState({newCategoryModalVisible: true})}
                                 >
                                     <svg className="inline h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">

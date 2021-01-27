@@ -26,6 +26,8 @@ setup(
     install_requires=[
         "fastapi",
         "aiofiles",
+        "uvicorn",
+        "jinja2",
         "pandas",
         "sqlalchemy",
         "tqdm",

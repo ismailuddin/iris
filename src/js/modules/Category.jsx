@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import { ItemTypes } from './File';
 
 
-function DropTarget({ category, setFileCategory, colour, disabled, onClick }) {
+function Category({ category, setFileCategory, colour, disabled, onClick }) {
     const [{ isOver, canDrop }, drop] = useDrop({
         accept: ItemTypes.FILE,
         drop: (item, monitor) => {
@@ -18,9 +18,9 @@ function DropTarget({ category, setFileCategory, colour, disabled, onClick }) {
     });
     if (!disabled) {
         return (
-            <button onClick={onClick} className="p-1 w-full text-sm">
-                <div ref={drop} className={`flex items-center h-full justify-center py-3 px-2 box-border bg-${colour}-700 rounded-lg`}>
-                    <span className={`font-bold text-${colour}-700-contrast`}>
+            <button onClick={onClick} className="p-1 w-full text-sm focus:outline-none">
+                <div ref={drop} className={`flex items-center h-full justify-center py-3 px-2 box-border bg-${colour}-600 rounded-lg hover:bg-${colour}-500 transition duration-300`}>
+                    <span className="font-bold text-white">
                         {category}
                     </span>
                 </div>
@@ -29,7 +29,7 @@ function DropTarget({ category, setFileCategory, colour, disabled, onClick }) {
     } else {
         return (
             <div className="p-1 w-full text-sm">
-                <div className="flex items-center h-full justify-center py-3 px-2 box-border bg-gray-300 border-4 border-gray-200 rounded-lg">
+                <div className="flex items-center h-full justify-center py-3 px-2 box-border bg-gray-300 rounded-lg">
                     <span className="font-bold text-gray-500">
                         {category}
                     </span>
@@ -39,7 +39,7 @@ function DropTarget({ category, setFileCategory, colour, disabled, onClick }) {
     }
 }
 
-DropTarget.propTypes = {
+Category.propTypes = {
     category: PropTypes.string,
     setFileCategory: PropTypes.func,
     colour: PropTypes.string,
@@ -47,5 +47,5 @@ DropTarget.propTypes = {
     onClick: PropTypes.func
 }
 
-export default DropTarget;
+export default Category;
 
