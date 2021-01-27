@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+black = "*"
+
+[packages]
+fastapi = "*"
+aiofiles = "*"
+sqlalchemy = "*"
+iris-data-labelling = {editable = true, path = "."}
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true
