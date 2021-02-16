@@ -12,4 +12,14 @@
     <div class="h-full" id="App"></div>
 </div>
 <script src="/public/js/modules/main.js"></script>
+<script>
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)');
+    if (isDark.matches) {
+        document.body.classList.add("dark");
+        document.getElementById("toggle").checked = true;
+    }
+    const toggleDarkMode = () => {
+        document.body.classList.toggle("dark");
+    }
+</script>
 {% endblock %}

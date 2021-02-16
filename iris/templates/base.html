@@ -7,15 +7,8 @@
     {% block head_scripts %}{% endblock %}
     <link rel="shortcut icon" href="/public/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="/public/css/main.css">
+    <link rel="stylesheet" href="/public/css/tailwind.css">
     <title>Iris - Image labelling</title>
-    <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia(
-                '(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
 </head>
 
 <body>

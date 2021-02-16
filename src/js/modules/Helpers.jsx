@@ -54,7 +54,7 @@ function ItemsPerPageSelector({ nPerPage, setNPerPage }) {
     };
     const options = [1, 10, 25, 50, 100, 200];
     return (
-        <div className="mr-4 border-r border-gray-300 dark:border-blueGray-700 pr-4 pt-1 flex items-center">
+        <div className="mr-4 border-r border-gray-300 dark:border-blueGray-700 pr-4 py-1 flex items-center">
             <label
                 className="uppercase tracking-wide text-blue-700 dark:text-blueGray-400 text-xs font-extrabold mr-4"
             >
@@ -110,7 +110,7 @@ function Paginator({ nPages, currentPage, setPage }) {
     return (
         <div className="inline-flex mr-4">
             <button
-                className={"text-xs dark:bg-blueGray-700 dark:text-blueGray-400 transition-colors duration-300 bg-blue-50 hover:bg-blue-700 hover:text-white font-bold py-2 px-4 rounded-l " + (currentPage == 1 ? " text-gray-500" : " text-gray-800")}
+                className={"text-xs dark:bg-blueGray-700 dark:text-blueGray-400 transition-colors duration-300 bg-blue-50 hover:bg-blue-700 hover:text-white font-bold py-2 px-4 rounded-l rounded-r-none focus:outline-nones" + (currentPage == 1 ? " text-gray-500" : " text-gray-800")}
                 onClick={prevPage}
             >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -118,8 +118,8 @@ function Paginator({ nPages, currentPage, setPage }) {
                 </svg>
             </button>
             <input
-                type="text"
-                className="inline-block text-xs dark:bg-blueGray-700 dark:text-blueGray-400 bg-blue-50 text-blue-600 font-bold py-2 px-2 rounded-none"
+                type="number"
+                className="inline-block text-xs dark:bg-blueGray-700 dark:text-blueGray-400 bg-blue-50 text-blue-600 font-bold py-2 px-2 rounded-none focus:outline-none"
                 style={{
                     width: '3rem'
                 }}
@@ -130,7 +130,7 @@ function Paginator({ nPages, currentPage, setPage }) {
                 / {nPages}
             </div>
             <button
-                className={"text-xs dark:bg-blueGray-700 dark:text-blueGray-400 transition-colors duration-300 bg-blue-50 hover:bg-blue-700 hover:text-white font-bold py-2 px-4 rounded-r " + (currentPage < nPages ? " text-gray-800" : " text-gray-500")}
+                className={"text-xs dark:bg-blueGray-700 dark:text-blueGray-400 transition-colors duration-300 bg-blue-50 hover:bg-blue-700 hover:text-white font-bold py-2 px-4 rounded-r rounded-l-none focus:outline-none" + (currentPage < nPages ? " text-gray-800" : " text-gray-500")}
                 onClick={nextPage}
             >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 26 26" stroke="currentColor">

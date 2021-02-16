@@ -1,10 +1,15 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .bottom-full {
-	bottom: 100%;
+    bottom: 100%;
 }
 .top-full {
-	top: 100%;
+    top: 100%;
+}
+
+.toggle-checkbox:checked {
+    @apply right-0;
+	@apply border-green-400;
+    right: 0;
+}
+.toggle-checkbox:checked + .toggle-label {
+    @apply bg-green-400;
 }
