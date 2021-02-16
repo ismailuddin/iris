@@ -210,7 +210,7 @@ export default class App extends Component {
                                     />
                                 ))}
                                 <button
-                                    className="mt-2 p-1 w-full text-xs flex items-center font-bold uppercase h-full justify-center py-2 px-2 box-border bg-blue-50 dark:bg-blueGray-500 dark:text-blueGray-300 text-blue-700 rounded-full hover:bg-blue-700 hover:text-white focus:outline-none"
+                                    className="mt-2 p-1 w-full text-xs flex items-center font-bold uppercase h-full justify-center py-2 px-2 box-border bg-blue-50 dark:bg-blueGray-500 dark:text-blueGray-300 text-blue-700 rounded-full hover:bg-blue-700 dark:hover:bg-blue-700 hover:text-white focus:outline-none transition-colors duration-300"
                                     onClick={() =>
                                         this.setState({
                                             newCategoryModalVisible: true,
